@@ -21,3 +21,6 @@ server.pid
 *.iml
 *.eml
 activator-*.sbt
+
+ngapp/node_modules
+ngapp/bower_components
