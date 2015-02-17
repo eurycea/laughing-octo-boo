@@ -3,6 +3,7 @@ class TaskCtrl
   constructor: (@$log, @TaskService) ->
     @$log.debug "constructing TaskController new"
     @tasks = []
+    @error = null
     @getAllTasks()
 
   getAllTasks: () ->
@@ -16,6 +17,7 @@ class TaskCtrl
     ,
       (error) =>
         @$log.error "Unable to get Tasks: #{error}"
+        @error = error
     )
 
 controllersModule.controller('TaskCtrl', TaskCtrl)
