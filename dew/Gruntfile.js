@@ -18,7 +18,8 @@ module.exports = function (grunt) {
   // Configurable paths for the application
   var appConfig = {
     app: require('./bower.json').appPath || 'app',
-    dist: 'dist'
+    dist: 'dist',
+    release: '../public'
   };
 
   // Define the configuration for all the tasks
@@ -137,7 +138,20 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      server: '.tmp',
+      release: {
+        options:{
+          force:true
+
+        },
+        files: [{
+          dot: true,
+          src: [
+            '<%= yeoman.release %>/{,*/}*',
+            '!<%= yeoman.release %>/.git{,*/}*'
+          ]
+        }]
+      }
     },
 
     // Add vendor prefixed styles
@@ -147,7 +161,7 @@ module.exports = function (grunt) {
       },
       server: {
         options: {
-          map: true,
+          map: true
         },
         files: [{
           expand: true,
@@ -404,9 +418,9 @@ module.exports = function (grunt) {
           src: ['generated/*']
         }, {
           expand: true,
-          cwd: '.',
-          src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
-          dest: '<%= yeoman.dist %>'
+          cwd: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/',
+          src: '*',
+          dest: '<%= yeoman.dist %>/fonts'
         }]
       },
       styles: {
@@ -414,6 +428,19 @@ module.exports = function (grunt) {
         cwd: '<%= yeoman.app %>/styles',
         dest: '.tmp/styles/',
         src: '{,*/}*.css'
+      },
+      release:{
+        expand:true,
+        cwd: '<%= yeoman.dist %>/',
+        src: '**',
+        dest: '<%= yeoman.release %>/'
+      },
+      glyphicons:{
+        expand: true,
+        cwd: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/',
+        src: '*',
+        dest: '.tmp/fonts/'
+
       }
     },
 
@@ -421,7 +448,8 @@ module.exports = function (grunt) {
     concurrent: {
       server: [
         'coffee:dist',
-        'compass:server'
+        'compass:server',
+        'copy:glyphicons'
       ],
       test: [
         'coffee',
@@ -495,5 +523,11 @@ module.exports = function (grunt) {
     'newer:jshint',
     'test',
     'build'
+  ]);
+
+  grunt.registerTask('release', [
+    'build',
+    'clean:release',
+    'copy:release'
   ]);
 };
