@@ -20,4 +20,5 @@ class TaskCtrl
         @error = error
     )
 
-controllersModule.controller('TaskCtrl', TaskCtrl)
+
+angular.module('dewApp.controllers').controller('TaskCtrl', ["$log","TaskService",TaskCtrl])

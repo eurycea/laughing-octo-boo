@@ -50,4 +50,4 @@ class TaskService
     )
     deferred.promise
 
-servicesModule.service("TaskService", TaskService)
+angular.module('dewApp.services').service("TaskService",["$log","$http","$q",TaskService])
